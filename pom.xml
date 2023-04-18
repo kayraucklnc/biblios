@@ -13,7 +13,7 @@
 	</parent>
 
 	<groupId>com.segmentationfault</groupId>
-	<artifactId>huceng</artifactId>
+	<artifactId>biblios</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>huceng</name>
