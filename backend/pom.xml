@@ -106,7 +106,7 @@
                         </exclude>
                     </excludes>
                     <mainClass>
-                        com.segmentationfault.huceng.BibliosApp
+                        com.biblios.huceng.BibliosApp
                     </mainClass>
                 </configuration>
             </plugin>
