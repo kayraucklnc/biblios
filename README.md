@@ -1,13 +1,4 @@
-# [Segmentation Fault] - Social Platform App
-
-## This is a fully functional webpage for a school that was given to us initially as a final project. This is the completed form of that project. Below images are the UI of the webpage and further down the usage guide.
-
-![Home](https://github.com/kayraucklnc/socialPlatform/blob/main/imgs/home.png?raw=true)
-![Feed](https://github.com/kayraucklnc/socialPlatform/blob/main/imgs/feed.png?raw=true)
-![Search](https://github.com/kayraucklnc/socialPlatform/blob/main/imgs/search.png?raw=true)
-![Admin](https://github.com/kayraucklnc/socialPlatform/blob/main/imgs/admin.png?raw=true)
-![Message](https://github.com/kayraucklnc/socialPlatform/blob/main/imgs/message.png?raw=true)
-
+# [Biblios] - Library Automation System
 
 ### Package Structure
 
@@ -107,15 +98,3 @@ spring.jpa.properties.hibernate.format_sql=true
 * Spring uses Jackson serializer so most request/response objects will be mapped using simple POJO classes. These will have request/response in their name eg. `FooRequest`.
 
 ----
-
-## Contributions:
-
-NİKOLA DRLJACA
-
-KAYRA ÜÇKILINÇ
-
-SAFA LEVENTOGLU
-
-DAVUT KULAKSIZ
-
-ÖZGÜR OKUMUŞ
