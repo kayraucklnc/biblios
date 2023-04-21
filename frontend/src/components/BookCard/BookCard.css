@@ -1,0 +1,145 @@
+.card {
+  border-radius: 11px;
+  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.50);
+  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.3);
+  margin: 30px 0;
+  display: grid;
+  word-break: break-word;
+  padding: 10px;
+  text-align: center;
+}
+
+.card__image{
+  max-height: 450px;
+  border-radius: 30px;
+  transition: transform .2s; /* Animation */
+}
+
+.card__image:hover {
+  transform: scale(1.08); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  box-shadow: #242526;
+  -webkit-box-shadow: 12px -3px 17px -8px rgba(0,0,0,0.36);
+  -moz-box-shadow: 12px -3px 17px -8px rgba(0,0,0,0.36);
+  box-shadow: 12px -3px 17px -8px rgba(0,0,0,0.36);
+}
+
+.borrowButton{
+  border: none;
+  padding: 7px;
+  border-radius: 5px;
+  background-color: #f50057;
+  font-weight: 500;
+  margin-right: 20px;
+  cursor: pointer;
+  color: white;
+  min-width: 90px;
+  width: 90px;
+  float: right;
+}
+
+.borrowButton:hover {
+  color: #f12b6d;
+  background-color: #f3f3f3;
+  box-shadow: #242526;
+  -webkit-box-shadow: 12px -3px 17px -8px rgba(0,0,0,0.36);
+  -moz-box-shadow: 12px -3px 17px -8px rgba(0,0,0,0.36);
+  box-shadow: 12px -3px 17px -8px rgba(0,0,0,0.36);
+}
+
+.disabledBorrow {
+  background-color: #242526;
+  opacity: 50%;
+  /* Define the shake animation */
+  animation-name: shake;
+  animation-duration: 0.08s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+  animation-play-state: paused;
+}
+
+/* Define the keyframes for the shake animation */
+@keyframes shake {
+  from {
+    transform: translateX(-1px);
+  }
+  to {
+    transform: translateX(1px);
+  }
+}
+
+.disabledBorrow:hover {
+  animation-name: shake;
+  color: ivory;
+  background-color: #242526;
+  opacity: 50%;
+  animation-play-state: running;
+}
+
+.bookBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.bookMiddle{
+  display: flex;
+  align-items: stretch;
+}
+
+.bookLeftText {
+  padding: 6px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bottomLeft {
+  display: flex;
+  align-items: center;
+}
+
+.ratingHolder{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.card__title {
+  font-family: 'Pacifico', cursive;
+  font-size: 38px;
+  font-weight: 500;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.postOptionsBtn:hover {
+  color: #ff6a6b;
+}
+
+.card__content{
+  padding: 8px;
+}
+
+.card__description{
+  padding: 10px;
+  text-align: justify;
+  max-height: 450px;
+  text-overflow: ellipsis;
+  overflow: scroll;
+}
+
+.isbnText {
+  color: darkgrey;
+}
+
+.bookmarkIcon {
+  color: #242526;
+  cursor: pointer;
+}
+
+.bookmarkIcon:hover {
+  color: #f12b6d;
+}
+

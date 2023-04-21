@@ -20,7 +20,7 @@ const Home = (props) => {
         messageSender={props.messageSender}
       />
       <div className="homeContainer">
-        <Sidebar />
+        {false && <Sidebar />}
         <Feed
           type="home"
           profilename={user.sub}
