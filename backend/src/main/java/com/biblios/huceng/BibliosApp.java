@@ -3,6 +3,7 @@ package com.biblios.huceng;
 import com.biblios.huceng.entity.Role;
 import com.biblios.huceng.startup.StartupService;
 import com.biblios.huceng.usecases.announcement.service.AnnouncementService;
+import com.biblios.huceng.usecases.book.service.BookService;
 import com.biblios.huceng.usecases.comment.service.CommentService;
 import com.biblios.huceng.usecases.following.service.FollowingService;
 import com.biblios.huceng.usecases.post.service.PostService;
@@ -65,7 +66,7 @@ public class BibliosApp {
                              PostService postService, ProfileService profileService,
                              RatingService ratingService, CommentService commentService,
                              SignupService signupService, FollowingService followingService,
-                             ScholarshipJobService scholarshipJobService
+                             ScholarshipJobService scholarshipJobService, BookService bookService
     ) {
         return args -> {
             service.saveRole(new Role(null, RoleUtil.ROLE_ADMIN));
@@ -82,7 +83,9 @@ public class BibliosApp {
                     commentService,
                     signupService,
                     followingService,
-                    scholarshipJobService
+                    scholarshipJobService,
+                    bookService
+
             );
             dummyDataController.createDummyData();
         };
