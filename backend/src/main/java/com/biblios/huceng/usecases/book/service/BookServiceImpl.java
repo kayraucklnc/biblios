@@ -6,6 +6,10 @@ import com.biblios.huceng.bibliosentity.bibliosrepository.BookRepository;
 import com.biblios.huceng.entity.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,7 +51,6 @@ public class BookServiceImpl implements BookService{
         return bookRepository.getRatebyISBN(bookISBN);
     }
 
-
     @Override
     public List<Book> getAllBooksByCategory(String category) {
         return bookRepository.getAllBooksByCategory(category);
@@ -58,10 +61,17 @@ public class BookServiceImpl implements BookService{
         return bookRepository.getAllBooksByISBN();
     }
 
-
     @Override
     public Book getBookbyName(String name) {
         return bookRepository.getBookbyName(name);
+    }
+
+    @Override
+    public Page<Book> returnAllBooks(int page, int pageSize) {
+        Pageable firstPageWithTwoElements = PageRequest.of(page, pageSize, Sort.by("ISBN"));
+        Page<Book> allBooks = bookRepository.findAll(firstPageWithTwoElements);
+
+        return allBooks;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.biblios.huceng.usecases.book.service;
 
 import com.biblios.huceng.bibliosentity.Book;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,12 +17,12 @@ public interface BookService {
 
     Float getRateBook(Long bookISBN);
 
-
     List<Book> getAllBooksByCategory(String category);
-
 
     List<Book> getAllBooksbyISBN();
 
     Book getBookbyName(String name);
+
+    Page<Book> returnAllBooks(int page, int pageSize);
 
 }

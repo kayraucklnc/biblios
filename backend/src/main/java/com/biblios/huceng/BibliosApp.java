@@ -70,9 +70,6 @@ public class BibliosApp {
     ) {
         return args -> {
             service.saveRole(new Role(null, RoleUtil.ROLE_ADMIN));
-            service.saveRole(new Role(null, RoleUtil.ROLE_ACADEMICIAN));
-            service.saveRole(new Role(null, RoleUtil.ROLE_STUDENT));
-            service.saveRole(new Role(null, RoleUtil.ROLE_GRADUATE));
 
             DummyDataController dummyDataController = new DummyDataController(
                     service,

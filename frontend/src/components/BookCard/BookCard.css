@@ -10,8 +10,9 @@
 }
 
 .card__image{
-  max-height: 450px;
-  border-radius: 30px;
+  object-fit: cover;
+  width: 100%;
+  height: 400px;
   transition: transform .2s; /* Animation */
 }
 
@@ -82,6 +83,10 @@
   justify-content: space-between;
 }
 
+.middleLeft{
+  display: flex;
+  flex-direction: column;
+}
 
 .bookMiddle{
   display: flex;
@@ -131,7 +136,18 @@
 }
 
 .isbnText {
-  color: darkgrey;
+  color: #474a4d;
+  font-weight: lighter;
+}
+
+.bookType {
+  font-weight: lighter;
+  font-size: 15px;
+}
+
+.authorText {
+  color: #474a4d;
+  font-weight: bold;
 }
 
 .bookmarkIcon {
@@ -141,5 +157,11 @@
 
 .bookmarkIcon:hover {
   color: #f12b6d;
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 

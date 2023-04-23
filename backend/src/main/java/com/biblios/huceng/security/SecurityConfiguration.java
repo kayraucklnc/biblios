@@ -51,35 +51,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/user/**").authenticated();
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/signup/approve").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
         http.authorizeRequests().antMatchers("/api/post/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_STUDENT, RoleUtil.ROLE_ACADEMICIAN, RoleUtil.ROLE_GRADUATE);
-        http.authorizeRequests().antMatchers("/api/profile/**")
-                .hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN, RoleUtil.ROLE_GRADUATE, RoleUtil.ROLE_STUDENT);
-        http.authorizeRequests().antMatchers("/api/follow/**").authenticated();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/announcement/**").authenticated();
-        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/announcement/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN);
-        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/announcement/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/announcement/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN);
-
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/requestinfo/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN);
-        http.authorizeRequests().antMatchers("/api/comment/**").authenticated();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/scholarshipJob/**").authenticated();
-        http.authorizeRequests().antMatchers("/api/scholarshipJob/*").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN, RoleUtil.ROLE_GRADUATE);
-        http.authorizeRequests().antMatchers("/api/scholarshipJob/appeal/**").authenticated();
-        http.authorizeRequests().antMatchers("/api/rating/**")
-                .hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN, RoleUtil.ROLE_GRADUATE, RoleUtil.ROLE_STUDENT);
-
-        //report usecase
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/report").authenticated();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/report").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/report/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
-        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/report/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
-        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/report/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/report/ban/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/report/unban/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN);
+        http.authorizeRequests().antMatchers("/api/book/**").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_STUDENT);
 
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/search").hasAnyAuthority(RoleUtil.ROLE_ADMIN, RoleUtil.ROLE_ACADEMICIAN, RoleUtil.ROLE_GRADUATE, RoleUtil.ROLE_STUDENT);
-        //--------------
 
-        //--------------
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
