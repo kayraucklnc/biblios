@@ -1,8 +1,20 @@
 package com.biblios.huceng.util;
 
+import com.biblios.huceng.bibliosentity.Book;
+import com.opencsv.exceptions.CsvValidationException;
+import org.springframework.util.ResourceUtils;
+
+import com.opencsv.CSVReader;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.io.*;
+
 import com.biblios.huceng.entity.*;
 import com.biblios.huceng.startup.StartupService;
 import com.biblios.huceng.usecases.announcement.service.AnnouncementService;
+import com.biblios.huceng.usecases.book.service.BookService;
 import com.biblios.huceng.usecases.comment.service.CommentService;
 import com.biblios.huceng.usecases.following.service.FollowingService;
 import com.biblios.huceng.usecases.post.service.PostService;
@@ -23,6 +35,8 @@ public class DummyDataController {
     public static final String DAVUTKULAKSIZ = "davutkulaksiz";
     public static final String NIKOLA_DRLJACA = "nikolaDrljaca";
 
+
+    private BookService bookService;
     private StartupService service;
     private AnnouncementService announcementService;
     private PostService postService;
@@ -44,7 +58,8 @@ public class DummyDataController {
                                CommentService commentService,
                                SignupService signupService,
                                FollowingService followingService,
-                               ScholarshipJobService scholarshipJobService) {
+                               ScholarshipJobService scholarshipJobService,
+                               BookService bookService) {
         this.announcementService = announcementService;
         this.postService = postService;
         this.service = service;
@@ -54,14 +69,18 @@ public class DummyDataController {
         this.signupService = signupService;
         this.followingService = followingService;
         this.scholarshipJobService = scholarshipJobService;
+        this.bookService = bookService;
     }
 
-    public void createDummyData() {
+
+
+
+    public void createDummyData() throws IOException {
         this.random = new Random();
 
         createUsers();
         createProfile();
-        //createBoooks();
+        createBooks("backend/src/main/java/com/biblios/huceng/util/main_dataset.csv");
         createAnnouncements();
         createPosts();
         createComments();
@@ -69,6 +88,59 @@ public class DummyDataController {
         setRates();
         createPendingUsers();
         createScholarshipJob();
+    }
+
+
+
+    public void createBooks(String csvFile) throws IOException {
+
+
+        List<Book> allBooks = new ArrayList<Book>();
+        try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
+
+
+            reader.readNext();
+            String[] line;
+            while ((line = reader.readNext()) != null) {
+                String[] data = line;
+                String tempLong = data[5].substring(0, data[5].length() - 3);
+                Long tempisbn = Long.parseLong(tempLong);
+                int lastThreeDigitsSum = 0;
+                int count = 0;
+                int number = tempisbn.intValue();
+                while (number > 0 && count < 3) {
+                    int digit = number % 10; // Get the last digit
+                    lastThreeDigitsSum += digit; // Add the digit to the sum
+                    number /= 10; // Remove the last digit from the number
+                    count++; // Increase the count
+                }
+
+                //random string generator
+                int leftLimit = 97; // letter 'a'
+                int rightLimit = 122; // letter 'z'
+                int targetStringLength = 10;
+                Random random = new Random();
+                StringBuilder buffer = new StringBuilder(targetStringLength);
+                for (int i = 0; i < targetStringLength; i++) {
+                    int randomLimitedInt = leftLimit + (int)
+                            (random.nextFloat() * (rightLimit - leftLimit + 1));
+                    buffer.append((char) randomLimitedInt);
+                }
+                String generatedString = buffer.toString();
+                Double tempRate = Double.parseDouble(data[4]);
+                Book b = new Book(tempisbn,data[1],data[3],"BA123",data[2],data[0],3,lastThreeDigitsSum,data[6],generatedString,tempRate);
+                allBooks.add(b);
+
+
+            }
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        bookService.createAllBooks(allBooks);
+
+
     }
 
     private void createPendingUsers() {
