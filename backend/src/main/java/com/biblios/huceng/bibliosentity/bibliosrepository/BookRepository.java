@@ -1,12 +1,10 @@
 package com.biblios.huceng.bibliosentity.bibliosrepository;
 
 import com.biblios.huceng.bibliosentity.Book;
-import com.biblios.huceng.entity.AppUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -29,4 +27,7 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long>  
 
     @Query("SELECT b.rate FROM Book b WHERE b.ISBN= :ISBN")
     Float getRatebyISBN(Long ISBN);
+
+    Page<Book> findAllByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(String name, String author, Pageable pager);
+
 }

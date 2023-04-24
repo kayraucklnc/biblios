@@ -46,7 +46,7 @@
 .profileRateCurrentStar {
   transform: scale(1.5);
   margin: 4px;
-  color: #f5c411;
+  color: #000000;
 }
 
 .profileRate {
@@ -268,7 +268,6 @@ input:focus ~ .bar:after {
 .profileRightBottom {
   display: flex;
   margin-right: 0rem;
-  margin-left: 15rem;
 }
 
 .profileSidebar {

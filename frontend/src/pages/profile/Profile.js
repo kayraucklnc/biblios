@@ -24,6 +24,7 @@ import Follow from "../../components/Follow/Follow";
 
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { Book } from "@material-ui/icons";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -97,7 +98,7 @@ const Profile = (props) => {
         return res.json();
       })
       .then((data) => {
-        setRating(Math.round(data.rating * 100) / 100); 
+        setRating(Math.round(data.rating * 100) / 100);
         setAbout(data.about);
         setBanner(linkFormatter(data.banner));
         setProfilePicture(linkFormatter(data.profilePicture));
@@ -124,10 +125,9 @@ const Profile = (props) => {
             }
           })
           .catch((error) => {
-            if (error instanceof SyntaxError){
+            if (error instanceof SyntaxError) {
               setCurrentuserRating(0);
-            }
-            else{
+            } else {
               console.error("There's an error", error);
             }
           });
@@ -343,128 +343,14 @@ const Profile = (props) => {
           <div className="profileRightTop">
             <div className="profileCover">
               <img className="profileCoverImg" src={banner} alt="" />
-              <div className="profileRateStars">
-                <RatingStars
-                  username={profilename}
-                  currentuserRating={currentuserRating}
-                  updateRating={setPing}
-                />
-              </div>
               <img className="profileUserImg" src={profilePicture} alt="" />
-              <div className="aboutIcons">
-                {isEdit
-                  ? isOwnProfile && (
-                      <Save
-                        className="infoIcons"
-                        sx={{
-                          color: "#ff6a6a",
-                          width: "20px",
-                          height: "20px",
-                          padding: "1px",
-                        }}
-                        onClick={saveHandler}
-                      />
-                    )
-                  : isOwnProfile && (
-                      <Edit
-                        className="infoIcons"
-                        sx={{
-                          color: "white",
-                          width: "20px",
-                          height: "20px",
-                          padding: "1px",
-                        }}
-                        onClick={editHandler}
-                      />
-                    )}
-              </div>
               <div className="profileRating">
-                <Star className="profileRateCurrentStar" />{" "}
+                <Book className="profileRateCurrentStar" />{" "}
                 <h2 className="profileRate">{rating}</h2>
-                <h2 className="profileMaxRate">/5</h2>
               </div>
               {!isOwnProfile && (
                 <div className="followArea" onClick={() => handleFollow()}>
                   <Follow followed={followed} />
-                </div>
-              )}
-              {user &&
-                (user.roles[0] === "ROLE_ADMIN" ||
-                  user.roles[0] === "ROLE_ACADEMICIAN") && (
-                  <div className="downloadUserInfo">
-                    <DownloadForOfflineRounded
-                      className="download-icon"
-                      style={{ fontSize: 40 }}
-                      onClick={download_table_as_csv}
-                    />
-                  </div>
-                )}
-              {isOwnProfile && (
-                <ArrowDropDown
-                  style={{ color: "white", height: "30px", width: "30px" }}
-                  className="dropDownIcon infoIcons"
-                  onClick={() => setOpenDropdown(!openDropdown)}
-                />
-              )}
-              {/*<HomeOutlined
-                style={{ height: "30px", width: "30px" }}
-                className="homeIcon infoIcons"
-                onClick={() => {
-                  redirectTo("/home");
-                  window.scrollTo(0, 0);
-                }}
-              />*/}
-              {openDropdown && <DropdownMenu />}
-              {!isOwnProfile && (
-                <div>
-                  <Snackbar
-                    className="profile-snackbar"
-                    open={showSuccess}
-                    autoHideDuration={6000}
-                    onClose={() => setShowSucess(false)}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  >
-                    <Alert
-                      onClose={() => setShowSucess(false)}
-                      severity="success"
-                      sx={{ width: "100%" }}
-                    >
-                    Your report is submitted successfully!
-                    </Alert>
-                  </Snackbar>
-                  <div id="reportDets" className="reportDetails">
-                    <hr />
-                    <h2>Reporting `{profilename}`</h2>
-                    <hr style={{ marginBottom: 18 }} />
-                    <h4>
-                      Reason ({80 - reportLength}):
-                      <input
-                        placeholder="No reason"
-                        className="reportInput"
-                        type="text"
-                        name="name"
-                        id="reportInputField"
-                        autoComplete="off"
-                        maxLength={80}
-                        onChange={reportInputChangeHandler}
-                      />
-                    </h4>
-
-                    <button
-                      className="btn shareButton reportButton"
-                      onClick={() => {
-                        reportUserReason();
-                      }}
-                    >
-                      Report User
-                    </button>
-                  </div>
-
-                  <PriorityHigh
-                    style={{ color: pink[500], height: "30px", width: "30px" }}
-                    className="dropDownIcon infoIcons"
-                    onClick={() => reportUserTab()}
-                  />
                 </div>
               )}
             </div>
@@ -490,13 +376,11 @@ const Profile = (props) => {
             </div>
           </div>
           <div className="profileRightBottom">
-            <div className="profileSidebar">
-              <Sidebar />
-            </div>
+            {/*<div className="profileSidebar">/!*<Sidebar />*!/</div>*/}
             <div className="profileFeed">
-              <Feed type="profile" profilename={profilename}/>
+              <Feed type="profile" profilename={profilename} />
             </div>
-            <Rightbar profile profilename={profilename}/>
+            {/*<Rightbar profile profilename={profilename}/>*/}
           </div>
         </div>
       </div>

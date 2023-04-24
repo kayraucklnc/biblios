@@ -31,6 +31,6 @@ public class BookController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AppUser appUser = startupService.getUser(auth.getName());
 
-        return bookService.returnAllBooks(page, 30);
+        return bookService.returnAllBooks(page, 10);
     }
 }

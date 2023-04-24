@@ -79,6 +79,7 @@ public class DummyDataController {
         this.random = new Random();
 
         createUsers();
+        createProfile();
         createBooks("backend/src/main/java/com/biblios/huceng/util/main_dataset.csv");
     }
 

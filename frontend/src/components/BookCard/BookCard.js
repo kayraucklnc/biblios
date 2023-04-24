@@ -26,8 +26,6 @@ import {
   FavoriteOutlined,
   GroupOutlined,
   ChildFriendlyOutlined,
-  MenuBookOutlined,
-  HealingOutlined,
   MoodOutlined,
   SchoolOutlined,
   DirectionsCarOutlined,

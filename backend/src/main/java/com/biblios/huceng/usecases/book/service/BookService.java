@@ -25,4 +25,6 @@ public interface BookService {
 
     Page<Book> returnAllBooks(int page, int pageSize);
 
+    Page<Book> searchBooksByName(String searchTerm, int page, int size);
+
 }

@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { SentimentVeryDissatisfiedRounded } from "@mui/icons-material";
 import ProfileCard from "../ProfileCard/ProfileCard";
 import BookCard from "../BookCard/BookCard";
+import PageSelection from "../PageSelection/PageSelection";
 
 const Feed = ({
   type,
@@ -18,9 +19,18 @@ const Feed = ({
   keyword,
   followPing,
   setFollowPing,
+  searchTerm,
+  searchPage,
+  searchBy,
+  sortBy,
+  scrollToInvisible,
 }) => {
   const [loading, setLoading] = useState(true);
   const [loadingBooks, setLoadingBooks] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemCount, seItemCount] = useState(0);
+
   const [posts, setPosts] = useState([]);
   const [books, setBooks] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
@@ -47,29 +57,15 @@ const Feed = ({
 
   useEffect(() => {
     let urlEnds = user.roles[0] !== "ROLE_ADMIN" ? "/feed" : "";
-    if (!keyword || keyword === "") {
+    if (!searchTerm || searchTerm === "") {
       if (isHome) {
-        fetch("http://localhost:8080/api/post" + urlEnds, opts)
-          .then((res) => {
-            return res.json();
-          })
-          .then((data) => {
-            setPosts(data);
-            return data;
-          })
-          .then(() => {
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.error("There's an error", error);
-          });
-
-        fetch("http://localhost:8080/api/book" + "/130", opts)
+        fetch("http://localhost:8080/api/book/" + (currentPage - 1), opts)
           .then((res) => {
             return res.json();
           })
           .then((data) => {
             setBooks(data.content);
+            setTotalPages(data.totalPages);
             console.log(data.content);
             return data;
           })
@@ -94,45 +90,12 @@ const Feed = ({
           .catch((error) => {
             console.error("There's an error", error);
           });
-      } else if (isAnnouncements) {
-        fetch("http://localhost:8080/api/announcement/all", opts)
-          .then((res) => {
-            return res.json();
-          })
-          .then((data) => {
-            setAnnouncements(data);
-            return data;
-          })
-          .then(() => {
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.error("There's an error", error);
-          });
-      } else if (isJobs) {
-        fetch("http://localhost:8080/api/scholarshipJob/", opts)
-          .then((res) => {
-            return res.json();
-          })
-          .then((data) => {
-            if (data instanceof Array) {
-              setJobs(data);
-              console.log(data);
-            }
-            return data;
-          })
-          .then(() => {
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.error("There's an error", error);
-          });
       }
     }
-  }, [profilename, keyword]);
+  }, [profilename, searchTerm, currentPage]);
 
   useEffect(() => {
-    if (keyword && keyword !== "") {
+    if (searchTerm && searchTerm !== "" && isSearched) {
       setLoading(true);
       const opts = {
         method: "POST",
@@ -140,39 +103,50 @@ const Feed = ({
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          searchTerm: keyword,
-          page: 0,
-          size: 1000,
-        }),
       };
 
-      fetch("http://localhost:8080/api/search/", opts)
+      fetch(
+        "http://localhost:8080/api/search/" +
+          searchTerm +
+          "/" +
+          (currentPage - 1),
+        opts
+      )
         .then((res) => {
           return res.json();
         })
         .then((data) => {
-          setUsers(data.appUsers);
-          setAnnouncements(data.announcements);
-          setPosts(data.posts);
-
+          setBooks(data.content);
+          setTotalPages(data.totalPages);
+          seItemCount(data.totalElements);
           return data;
         })
         .then(() => {
-          setLoading(false);
+          setLoadingBooks(false);
         })
         .catch((error) => {
           console.error("There's an error", error);
         });
     }
-  }, [keyword]);
+  }, [searchTerm, isSearched, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearched]);
 
   return (
     <div className="feed">
+      <text>Search: {isSearched ? "YES" : "NO"}</text>
+      <PageSelection
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(pageClicked) => {
+          setCurrentPage(pageClicked);
+        }}
+      />
       {!isSearched && (isHome || isProfile) && (
         <div className="feedWrapper">
-          {profilename && profilename === user.sub && <Share />}
-          {loading && (
+          {loadingBooks && (
             <center>
               <Loader />
             </center>
@@ -208,103 +182,58 @@ const Feed = ({
           )}
         </div>
       )}
-      {!isSearched && isAnnouncements && (
-        <div className="feedWrapper">
-          {loading && (
-            <center>
-              <Loader />
-            </center>
-          )}
-          {!loading &&
-            announcements.map((a) => (
-              <Announcement key={a.id} announcement={a} type="feed" />
-            ))}
-        </div>
-      )}
-      {!isSearched && isJobs && (
-        <div className="feedWrapper">
-          {profilename &&
-            profilename === user.sub &&
-            user.roles[0] !== "ROLE_STUDENT" && <Share jobs />}
-          {loading && (
-            <center>
-              <Loader />
-            </center>
-          )}
-          {!loading &&
-            jobs.map((j) => (
-              <JobApplicationForm key={j.id} applicationForm={j} />
-            ))}
-        </div>
-      )}
+
       {isSearched && (
         <div className="feedWrapper">
-          <div id="userResults">
+          <div id="postResults">
             <div className="searchInfo">
-              <b>{users.length}</b> profile result{users.length !== 1 && "s"}{" "}
-              found for "<b>{keyword}</b>":
+              <b>{itemCount}</b> book result{itemCount !== 1 && "s"} found for "
+              <b>{searchTerm}</b>":
             </div>
-            {loading && (
+            {loadingBooks && (
               <center>
                 <Loader />
               </center>
             )}
-            {!loading &&
-              users.map((u) => (
-                <ProfileCard
-                  key={u.id}
-                  appUser={u}
-                  followPing={followPing}
-                  setFollowPing={setFollowPing}
+            {!loadingBooks &&
+              books.map((b) => (
+                <BookCard
+                  key={b.isbn}
+                  title={b.name}
+                  coverImage={b.photoURL}
+                  description={b.description}
+                  rate={b.rate}
+                  copiesLeft={b.copiesLeft}
+                  totalCopies={b.totalCopies}
+                  isbn={b.isbn}
+                  author={b.author}
+                  format={b.format}
+                  category={b.category}
                 />
               ))}
           </div>
-
-          <div id="announcementResults">
-            <div className="searchInfo">
-              <b>{announcements.length}</b> announcement result
-              {announcements.length !== 1 && "s"} found for "<b>{keyword}</b>":
-            </div>
-            {loading && (
-              <center>
-                <Loader />
-              </center>
-            )}
-            {!loading &&
-              announcements.map((a) => (
-                <Announcement key={a.id} announcement={a} type="feed" />
-              ))}
-          </div>
-
-          <div id="postResults">
-            <div className="searchInfo">
-              <b>{posts.length}</b> post result{posts.length !== 1 && "s"} found
-              for "<b>{keyword}</b>":
-            </div>
-            {loading && (
-              <center>
-                <Loader />
-              </center>
-            )}
-            {!loading && posts.map((p) => <Post key={p.id} post={p} />)}
-          </div>
           <div>
-            {users.length === 0 &&
-              announcements.length === 0 &&
-              posts.length === 0 && (
-                <div>
-                  <div className="notFound">
-                    <br></br>{" "}
-                    <SentimentVeryDissatisfiedRounded
-                      style={{ fontSize: 500, alignSelf: "center" }}
-                    />
-                    <b> No Results Found! </b>
-                  </div>
+            {books.length === 0 && (
+              <div>
+                <div className="notFound">
+                  <br></br>{" "}
+                  <SentimentVeryDissatisfiedRounded
+                    style={{ fontSize: 500, alignSelf: "center" }}
+                  />
+                  <b> No Results Found! </b>
                 </div>
-              )}
+              </div>
+            )}
           </div>
         </div>
       )}
+      <PageSelection
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(pageClicked) => {
+          setCurrentPage(pageClicked);
+        }}
+      />
     </div>
   );
 };

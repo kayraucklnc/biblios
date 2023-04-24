@@ -23,40 +23,6 @@ const App = () => {
   const [stomp, setStomp] = useState(null);
   const userId = sessionStorage.getItem("id");
 
-  useEffect(() => {
-    console.log("TRIES TO CONNECT");
-    connect();
-  }, []);
-
-  const connect = () => {
-    const Stomp = require("stompjs");
-    var SockJS = require("sockjs-client");
-    SockJS = new SockJS("http://localhost:8080/ws");
-    stompClient = Stomp.over(SockJS);
-    setStomp(stompClient);
-    stompClient.connect({}, onConnected, (err) => {
-      console.log(err);
-    });
-    console.log("StompClient: ");
-    console.log(stompClient);
-  };
-
-  const onConnected = () => {
-    console.log("connected");
-    console.log("Safa is current");
-    stompClient.subscribe(
-      "/user/" + userId + "/queue/messages",
-      onMessageReceived
-    );
-  };
-
-  const onMessageReceived = (msg) => {
-    const notification = JSON.parse(msg.body);
-    console.log(notification);
-    setMessageSender(notification.senderName);
-    setIsNotify(true);
-  };
-
   return (
     <>
       <Router>

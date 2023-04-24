@@ -1,4 +1,5 @@
 .card {
+  width: 700px;
   border-radius: 11px;
   -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.50);
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.3);
@@ -12,7 +13,7 @@
 .card__image{
   object-fit: cover;
   width: 100%;
-  height: 400px;
+  height: 300px;
   transition: transform .2s; /* Animation */
 }
 
@@ -88,6 +89,10 @@
   flex-direction: column;
 }
 
+.middleRight{
+  flex: 1;
+}
+
 .bookMiddle{
   display: flex;
   align-items: stretch;
@@ -133,6 +138,8 @@
   max-height: 450px;
   text-overflow: ellipsis;
   overflow: scroll;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+
 }
 
 .isbnText {
