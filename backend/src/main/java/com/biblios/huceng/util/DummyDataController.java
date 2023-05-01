@@ -80,7 +80,7 @@ public class DummyDataController {
 
         createUsers();
         createProfile();
-        createBooks("backend/src/main/java/com/biblios/huceng/util/main_dataset.csv");
+        createBooks("/main_dataset.csv");
     }
 
 
@@ -89,7 +89,7 @@ public class DummyDataController {
 
 
         List<Book> allBooks = new ArrayList<Book>();
-        try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
+        try (CSVReader reader = new CSVReader(new InputStreamReader(getClass().getResourceAsStream(csvFile)))) {
 
 
             reader.readNext();
