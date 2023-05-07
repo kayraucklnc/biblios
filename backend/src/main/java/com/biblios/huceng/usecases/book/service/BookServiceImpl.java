@@ -3,6 +3,8 @@ package com.biblios.huceng.usecases.book.service;
 
 import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.bibliosentity.bibliosrepository.BookRepository;
+import com.biblios.huceng.entity.AppUser;
+import com.biblios.huceng.entity.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,14 +20,27 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-
+    private final AppUserRepository appUserRepository;
 
     @Override
     public Book getBook(Long ISBN) {
         return bookRepository.getBookbyISBN(ISBN);
+    }
+
+    @Override
+    public boolean borrowBook(Long ISBN, Long appUserID) {
+        Book book = bookRepository.getBookbyISBN(ISBN);
+        if (book.getCopiesLeft() > 0) {
+            AppUser appUser = appUserRepository.findById(appUserID).orElseThrow();
+            book.setCopiesLeft(book.getCopiesLeft() - 1);
+            book.getBorrowedByUsers().add(appUser);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -74,7 +89,19 @@ public class BookServiceImpl implements BookService{
     @Override
     public Page<Book> searchBooksByName(String searchTerm, int page, int size) {
         Pageable pager = PageRequest.of(page, size, Sort.by("totalCopies").descending());
-        return bookRepository.findAllByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(searchTerm,searchTerm, pager);
+        return bookRepository.findAllByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(searchTerm, searchTerm, pager);
+    }
+
+    @Override
+    public boolean returnBook(long bookISBN, Long appUserID) {
+        Book book = bookRepository.getBookbyISBN(bookISBN);
+        AppUser appUser = appUserRepository.findById(appUserID).orElseThrow();
+        if (book.getBorrowedByUsers().contains(appUser)) {
+            book.setCopiesLeft(book.getCopiesLeft() + 1);
+            book.getBorrowedByUsers().remove(appUser);
+            return true;
+        }
+        return false;
     }
 
 }

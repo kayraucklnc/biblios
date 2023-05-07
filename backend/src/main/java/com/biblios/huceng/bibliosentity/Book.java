@@ -2,6 +2,8 @@ package com.biblios.huceng.bibliosentity;
 
 
 import com.biblios.huceng.entity.AppUser;
+import com.biblios.huceng.entity.Comment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +58,10 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Collection<AppUser> borrowedByUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "parentBook", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    public Collection<Review> reviews = new ArrayList<>();
 
     public Long getISBN() {
         return ISBN;

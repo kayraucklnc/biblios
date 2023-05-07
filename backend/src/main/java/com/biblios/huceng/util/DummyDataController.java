@@ -1,12 +1,12 @@
 package com.biblios.huceng.util;
 
+import com.biblios.huceng.usecases.review.service.ReviewService;
 import com.biblios.huceng.bibliosentity.Book;
+import com.biblios.huceng.bibliosentity.Review;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.util.ResourceUtils;
 
 import com.opencsv.CSVReader;
 
-import java.io.FileReader;
 import java.io.IOException;
 
 import java.io.*;
@@ -47,6 +47,8 @@ public class DummyDataController {
     private FollowingService followingService;
     private ScholarshipJobService scholarshipJobService;
 
+    private ReviewService reviewService;
+
     private Random random;
 
 
@@ -59,7 +61,8 @@ public class DummyDataController {
                                SignupService signupService,
                                FollowingService followingService,
                                ScholarshipJobService scholarshipJobService,
-                               BookService bookService) {
+                               BookService bookService,
+                               ReviewService reviewService) {
         this.announcementService = announcementService;
         this.postService = postService;
         this.service = service;
@@ -70,6 +73,7 @@ public class DummyDataController {
         this.followingService = followingService;
         this.scholarshipJobService = scholarshipJobService;
         this.bookService = bookService;
+        this.reviewService = reviewService;
     }
 
 
@@ -81,8 +85,24 @@ public class DummyDataController {
         createUsers();
         createProfile();
         createBooks("/main_dataset.csv");
+        createReviews();
+        createBorrows();
     }
 
+    private void createBorrows() {
+        AppUser appUser = service.getUser(KAYRAUCKILINC);
+        bookService.borrowBook(9781509858637L, appUser.getId());
+    }
+
+    private void createReviews() {
+        Book book = bookService.getBook(9781509858637L);
+        Review review = new Review(3.0f, createRandomTime(), book);
+        reviewService.save(review);
+
+        Book book2 = bookService.getBook(9780199689903L);
+        Review review2 = new Review(4.0f, createRandomTime(), book2);
+        reviewService.save(review2);
+    }
 
 
     public void createBooks(String csvFile) throws IOException {
@@ -198,10 +218,10 @@ public class DummyDataController {
             service.saveUser(appUser);
         }
 
-        service.assignRoleToUser("nikolaDrljaca", RoleUtil.ROLE_ADMIN);
+        service.assignRoleToUser("nikolaDrljaca", RoleUtil.ROLE_DONOR);
         service.assignRoleToUser("kayrauckilinc", RoleUtil.ROLE_ADMIN);
-        service.assignRoleToUser("davutkulaksiz", RoleUtil.ROLE_ADMIN);
-        service.assignRoleToUser("leventoglu", RoleUtil.ROLE_ADMIN);
+        service.assignRoleToUser("davutkulaksiz", RoleUtil.ROLE_LIBRARIAN);
+        service.assignRoleToUser("leventoglu", RoleUtil.ROLE_STUDENT);
         service.assignRoleToUser("ozgurokumus", RoleUtil.ROLE_ADMIN);
     }
 

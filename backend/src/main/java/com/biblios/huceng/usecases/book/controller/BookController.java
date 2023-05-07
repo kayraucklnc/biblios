@@ -33,4 +33,20 @@ public class BookController {
 
         return bookService.returnAllBooks(page, 10);
     }
+
+    @GetMapping("borrow/{bookISBN}")
+    public boolean borrowBook(@PathVariable long bookISBN){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        AppUser appUser = startupService.getUser(auth.getName());
+
+        return bookService.borrowBook(bookISBN, appUser.getId());
+    }
+
+    @GetMapping("return/{bookISBN}")
+    public boolean returnBook(@PathVariable long bookISBN){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        AppUser appUser = startupService.getUser(auth.getName());
+
+        return bookService.returnBook(bookISBN, appUser.getId());
+    }
 }

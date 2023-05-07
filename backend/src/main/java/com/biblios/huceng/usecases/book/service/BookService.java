@@ -9,6 +9,8 @@ public interface BookService {
 
     Book getBook(Long ISBN);
 
+    boolean borrowBook(Long ISBN, Long appUserID);
+
     void createBook(Book book);
 
     void createAllBooks(List<Book> books);
@@ -27,4 +29,5 @@ public interface BookService {
 
     Page<Book> searchBooksByName(String searchTerm, int page, int size);
 
+    boolean returnBook(long bookISBN, Long appUserID);
 }

@@ -9,6 +9,7 @@ import com.biblios.huceng.usecases.following.service.FollowingService;
 import com.biblios.huceng.usecases.post.service.PostService;
 import com.biblios.huceng.usecases.profile.service.ProfileService;
 import com.biblios.huceng.usecases.rate.service.RatingService;
+import com.biblios.huceng.usecases.review.service.ReviewService;
 import com.biblios.huceng.usecases.scholarshipJobs.service.ScholarshipJobService;
 import com.biblios.huceng.usecases.signup.service.SignupService;
 import com.biblios.huceng.util.DummyDataController;
@@ -66,10 +67,14 @@ public class BibliosApp {
                              PostService postService, ProfileService profileService,
                              RatingService ratingService, CommentService commentService,
                              SignupService signupService, FollowingService followingService,
-                             ScholarshipJobService scholarshipJobService, BookService bookService
+                             ScholarshipJobService scholarshipJobService, BookService bookService,
+                             ReviewService reviewService
     ) {
         return args -> {
             service.saveRole(new Role(null, RoleUtil.ROLE_ADMIN));
+            service.saveRole(new Role(null, RoleUtil.ROLE_LIBRARIAN));
+            service.saveRole(new Role(null, RoleUtil.ROLE_STUDENT));
+            service.saveRole(new Role(null, RoleUtil.ROLE_DONOR));
 
             DummyDataController dummyDataController = new DummyDataController(
                     service,
@@ -81,7 +86,8 @@ public class BibliosApp {
                     signupService,
                     followingService,
                     scholarshipJobService,
-                    bookService
+                    bookService,
+                    reviewService
 
             );
             dummyDataController.createDummyData();
