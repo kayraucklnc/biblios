@@ -28,7 +28,7 @@ public class RequestUserServiceImpl implements RequestUserService {
 
         Profile profile = profileRepository.findProfileByUsername(username).orElseThrow();
         AppUser appUser = appUserRepository.findAppUserByUsername(username).orElseThrow();
-        ProfileSummary summary = new ProfileSummary(appUser.getFirstName(), appUser.getLastName(),appUser.getEmail(), appUser.getUsername(), profile.getAbout(), profile.getRating(), appUser.getPosts());
+        ProfileSummary summary = new ProfileSummary(appUser.getFirstName(), appUser.getLastName(),appUser.getEmail(), appUser.getUsername(), profile.getAbout(), profile.getRating());
 
         return summary;
     }

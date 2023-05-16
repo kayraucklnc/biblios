@@ -2,15 +2,15 @@ package com.biblios.huceng;
 
 import com.biblios.huceng.entity.Role;
 import com.biblios.huceng.startup.StartupService;
-import com.biblios.huceng.usecases.announcement.service.AnnouncementService;
+import com.biblios.huceng.usecases.author.service.AuthorService;
 import com.biblios.huceng.usecases.book.service.BookService;
-import com.biblios.huceng.usecases.comment.service.CommentService;
+import com.biblios.huceng.usecases.campus.service.CampusService;
 import com.biblios.huceng.usecases.following.service.FollowingService;
-import com.biblios.huceng.usecases.post.service.PostService;
 import com.biblios.huceng.usecases.profile.service.ProfileService;
+import com.biblios.huceng.usecases.publisher.service.PublisherService;
 import com.biblios.huceng.usecases.rate.service.RatingService;
 import com.biblios.huceng.usecases.review.service.ReviewService;
-import com.biblios.huceng.usecases.scholarshipJobs.service.ScholarshipJobService;
+import com.biblios.huceng.usecases.shelf.service.ShelfService;
 import com.biblios.huceng.usecases.signup.service.SignupService;
 import com.biblios.huceng.util.DummyDataController;
 import com.biblios.huceng.util.RoleUtil;
@@ -63,11 +63,14 @@ public class BibliosApp {
      * @return
      */
     @Bean
-    CommandLineRunner runner(StartupService service, AnnouncementService announcementService,
-                             PostService postService, ProfileService profileService,
-                             RatingService ratingService, CommentService commentService,
-                             SignupService signupService, FollowingService followingService,
-                             ScholarshipJobService scholarshipJobService, BookService bookService,
+    CommandLineRunner runner(StartupService service,  ProfileService profileService,
+                             RatingService ratingService,
+                             SignupService signupService,
+                             BookService bookService,
+                             AuthorService authorService,
+                             PublisherService publisherService,
+                             CampusService campusService,
+                             ShelfService shelfService,
                              ReviewService reviewService
     ) {
         return args -> {
@@ -79,15 +82,15 @@ public class BibliosApp {
             DummyDataController dummyDataController = new DummyDataController(
                     service,
                     profileService,
-                    announcementService,
-                    postService,
                     ratingService,
-                    commentService,
                     signupService,
-                    followingService,
-                    scholarshipJobService,
+                    reviewService,
                     bookService,
-                    reviewService
+                    authorService,
+                    publisherService,
+                    campusService,
+                    shelfService
+
 
             );
             dummyDataController.createDummyData();
