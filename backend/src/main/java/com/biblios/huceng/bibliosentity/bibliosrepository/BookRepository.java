@@ -28,6 +28,8 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long>  
     @Query("SELECT b.rate FROM Book b WHERE b.ISBN= :ISBN")
     Float getRatebyISBN(Long ISBN);
 
+
+
     Page<Book> findAllByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(String name, String author, Pageable pager);
 
 }

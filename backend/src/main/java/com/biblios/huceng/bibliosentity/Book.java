@@ -2,7 +2,9 @@ package com.biblios.huceng.bibliosentity;
 
 
 import com.biblios.huceng.entity.AppUser;
-import com.biblios.huceng.entity.Comment;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -10,9 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table
@@ -26,21 +26,20 @@ public class Book {
     private Long ISBN;
     private String name;
     private String format;
-    private String LocationID;
     private String author;
     private String photoURL;
     private Integer totalCopies;
     private Integer copiesLeft;
     private String category;
+    @Column(columnDefinition="TEXT")
     private String description;
     private Double rate;
 
 
-    public Book(Long ISBN, String name, String format, String locationID, String author, String photoURL, Integer copiesLeft, Integer totalCopies, String category, String description, Double rate) {
+    public Book(Long ISBN, String name, String format,  String author, String photoURL, Integer copiesLeft, Integer totalCopies, String category, String description, Double rate, Shelf shelf, Publisher publisher) {
         this.ISBN = ISBN;
         this.name = name;
         this.format = format;
-        this.LocationID = locationID;
         this.author = author;
         this.photoURL = photoURL;
         this.copiesLeft = copiesLeft;
@@ -48,6 +47,8 @@ public class Book {
         this.category = category;
         this.description = description;
         this.rate = rate;
+        this.shelf = shelf;
+        this.publisher = publisher;
     }
 
 
@@ -87,13 +88,7 @@ public class Book {
         this.format = format;
     }
 
-    public String getLocationID() {
-        return LocationID;
-    }
 
-    public void setLocationID(String locationID) {
-        LocationID = locationID;
-    }
 
     public String getAuthor() {
         return author;
@@ -169,6 +164,19 @@ public class Book {
     }
 
 
+    @ManyToMany
+    @JsonBackReference
+    @JoinTable(name = "book_author",
+            joinColumns = @JoinColumn(name = "author"),
+            inverseJoinColumns = @JoinColumn(name = "ID"))
+    private Set<Author> authors = new HashSet<>();
 
 
+    @ManyToOne()
+    @JoinColumn(name = "shelfID")
+    private Shelf shelf;
+
+    @ManyToOne()
+    @JoinColumn(name = "publisherID")
+    private Publisher publisher;
 }

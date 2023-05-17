@@ -1,7 +1,9 @@
 package com.biblios.huceng.usecases.book.service;
 
 
+import com.biblios.huceng.bibliosentity.Author;
 import com.biblios.huceng.bibliosentity.Book;
+import com.biblios.huceng.bibliosentity.bibliosrepository.AuthorRepository;
 import com.biblios.huceng.bibliosentity.bibliosrepository.BookRepository;
 import com.biblios.huceng.entity.AppUser;
 import com.biblios.huceng.entity.repository.AppUserRepository;
@@ -23,6 +25,8 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+
     private final AppUserRepository appUserRepository;
 
     @Override
