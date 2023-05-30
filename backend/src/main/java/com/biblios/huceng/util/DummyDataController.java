@@ -234,7 +234,7 @@ public class DummyDataController {
 
     public void createBooks(String csvFile) throws IOException {
 
-
+        int counter = 0;
         List<Book> allBooks = new ArrayList<Book>();
         try (CSVReader reader = new CSVReader(new InputStreamReader(getClass().getResourceAsStream(csvFile)))) {
 
@@ -242,6 +242,9 @@ public class DummyDataController {
             reader.readNext();
             String[] line;
             while ((line = reader.readNext()) != null) {
+                if(counter == 100) {
+                    break;
+                }
                 String[] data = line;
                 String tempLong = data[4].substring(0, data[4].length() - 3);
                 Long tempisbn = Long.parseLong(tempLong);
@@ -286,7 +289,7 @@ public class DummyDataController {
                 Book b = new Book(tempisbn, data[1], data[2], data[6], data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher);
                 b.getAuthors().add(authorsForBook.get(data[6]));
                 allBooks.add(b);
-
+                counter++;
 
             }
         } catch (CsvValidationException e) {
