@@ -10,6 +10,7 @@ import com.biblios.huceng.usecases.profile.service.ProfileService;
 import com.biblios.huceng.usecases.publisher.service.PublisherService;
 import com.biblios.huceng.usecases.rate.service.RatingService;
 import com.biblios.huceng.usecases.review.service.ReviewService;
+import com.biblios.huceng.usecases.series.service.SeriesService;
 import com.biblios.huceng.usecases.shelf.service.ShelfService;
 import com.biblios.huceng.usecases.signup.service.SignupService;
 import com.biblios.huceng.util.DummyDataController;
@@ -71,7 +72,8 @@ public class BibliosApp {
                              PublisherService publisherService,
                              CampusService campusService,
                              ShelfService shelfService,
-                             ReviewService reviewService
+                             ReviewService reviewService,
+                             SeriesService seriesService
     ) {
         return args -> {
             service.saveRole(new Role(null, RoleUtil.ROLE_ADMIN));
@@ -89,8 +91,8 @@ public class BibliosApp {
                     authorService,
                     publisherService,
                     campusService,
-                    shelfService
-
+                    shelfService,
+                    seriesService
 
             );
             dummyDataController.createDummyData();

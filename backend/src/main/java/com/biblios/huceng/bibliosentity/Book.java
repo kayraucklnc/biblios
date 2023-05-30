@@ -179,4 +179,8 @@ public class Book {
     @ManyToOne()
     @JoinColumn(name = "publisherID")
     private Publisher publisher;
+
+    @ManyToOne()
+    @JoinColumn(name = "seriesID")
+    private Series series;
 }

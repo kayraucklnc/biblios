@@ -1,13 +1,14 @@
 package com.biblios.huceng.bibliosentity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table
@@ -20,12 +21,10 @@ public class Series {
     @Id
     private String ID;
     private String name;
-    private Integer numOfBooks;
 
-    public Series(String ID, String name, Integer numOfBooks) {
+    public Series(String ID, String name) {
         this.ID = ID;
         this.name = name;
-        this.numOfBooks = numOfBooks;
     }
 
     public String getID() {
@@ -44,11 +43,8 @@ public class Series {
         this.name = name;
     }
 
-    public Integer getNumOfBooks() {
-        return numOfBooks;
-    }
 
-    public void setNumOfBooks(Integer numOfBooks) {
-        this.numOfBooks = numOfBooks;
-    }
+    @OneToMany(mappedBy = "series", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private Collection<Book> books = new ArrayList<>();
 }

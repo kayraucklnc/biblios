@@ -4,6 +4,7 @@ import com.biblios.huceng.bibliosentity.*;
 import com.biblios.huceng.usecases.author.service.AuthorService;
 import com.biblios.huceng.usecases.campus.service.CampusService;
 import com.biblios.huceng.usecases.publisher.service.PublisherService;
+import com.biblios.huceng.usecases.series.service.SeriesService;
 import com.biblios.huceng.usecases.shelf.service.ShelfService;
 import com.biblios.huceng.usecases.review.service.ReviewService;
 import com.biblios.huceng.bibliosentity.Book;
@@ -41,6 +42,7 @@ public class DummyDataController {
     public static final String NIKOLA_DRLJACA = "nikolaDrljaca";
 
 
+    private SeriesService seriesService;
     private ShelfService shelfService;
     private CampusService campusService;
     private PublisherService publisherService;
@@ -66,7 +68,8 @@ public class DummyDataController {
                                AuthorService authorService,
                                PublisherService publisherService,
                                CampusService campusService,
-                               ShelfService shelfService) {
+                               ShelfService shelfService,
+                               SeriesService seriesService) {
         this.service = service;
         this.profileService = profileService;
         this.ratingService = ratingService;
@@ -77,6 +80,7 @@ public class DummyDataController {
         this.campusService = campusService;
         this.shelfService = shelfService;
         this.reviewService = reviewService;
+        this.seriesService = seriesService;
     }
 
 
@@ -92,6 +96,7 @@ public class DummyDataController {
         createBooks("/main_dataset.csv");
         createReviews();
         createBorrows();
+        createSeries();
     }
 
     private void createBorrows() {
@@ -104,6 +109,23 @@ public class DummyDataController {
     Hashtable<String, Publisher> publishersForBook = new Hashtable<>();
     Hashtable<String, Author> authorsForBook = new Hashtable<>();
 
+    public void createSeries() throws IOException {
+        List<Series> allSeries = new ArrayList<Series>();
+        List<String> seriesNames = new ArrayList<String>();
+
+        seriesNames.add("Harry Potter");
+        seriesNames.add("Lord of the Rings");
+        seriesNames.add("the Hobbit");
+        seriesNames.add("Hunger Games");
+
+        for(int i = 0;i<seriesNames.size();i++) {
+            int tempID = i+1;
+            Series series = new Series(String.valueOf(tempID),seriesNames.get(i));
+            allSeries.add(series);
+        }
+
+        seriesService.createAllSeries(allSeries);
+    }
 
     public void createShelf(String csvFile) throws IOException {
         List<Shelf> allShelf = new ArrayList<Shelf>();
