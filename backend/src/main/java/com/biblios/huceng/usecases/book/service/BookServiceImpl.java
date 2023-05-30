@@ -5,8 +5,11 @@ import com.biblios.huceng.bibliosentity.Author;
 import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.bibliosentity.bibliosrepository.AuthorRepository;
 import com.biblios.huceng.bibliosentity.bibliosrepository.BookRepository;
+import com.biblios.huceng.bibliosentity.bibliosrepository.LogRepository;
 import com.biblios.huceng.entity.AppUser;
 import com.biblios.huceng.entity.repository.AppUserRepository;
+import com.biblios.huceng.usecases.log.service.LogService;
+import com.biblios.huceng.usecases.log.service.LogServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,7 +28,7 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
+    private final LogService logService;
 
 
     private final AppUserRepository appUserRepository;
@@ -37,6 +40,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean borrowBook(Long ISBN, Long appUserID) {
+        logService.addLog("Book added");
         Book book = bookRepository.getBookbyISBN(ISBN);
         if (book.getCopiesLeft() > 0) {
             AppUser appUser = appUserRepository.findById(appUserID).orElseThrow();
@@ -50,16 +54,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void createBook(Book book) {
+        logService.addLog("Book added");
         bookRepository.save(book);
     }
 
     @Override
     public void createAllBooks(List<Book> books) {
+        logService.addLog("Books added in bulk");
         bookRepository.saveAll(books);
     }
 
     @Override
     public void deleteBook(Long bookISBN) {
+        logService.addLog("Book deleted");
         bookRepository.deleteById(bookISBN);
     }
 
@@ -99,6 +106,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean returnBook(long bookISBN, Long appUserID) {
+        logService.addLog("Book returned");
         Book book = bookRepository.getBookbyISBN(bookISBN);
         AppUser appUser = appUserRepository.findById(appUserID).orElseThrow();
         if (book.getBorrowedByUsers().contains(appUser)) {

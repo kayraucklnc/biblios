@@ -4,6 +4,7 @@ import com.biblios.huceng.bibliosentity.Author;
 import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.bibliosentity.bibliosrepository.AuthorRepository;
 import com.biblios.huceng.bibliosentity.bibliosrepository.BookRepository;
+import com.biblios.huceng.usecases.log.service.LogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,8 +22,8 @@ import java.util.List;
 @Slf4j
 public class AuthorServiceImpl implements AuthorService{
 
-
     private final AuthorRepository authorRepository;
+    private final LogService logService;
 
 
     @Override
@@ -32,6 +33,7 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public void createAuthor(Author author) {
+        logService.addLog("Author added");
         authorRepository.save(author);
     }
 
