@@ -29,7 +29,6 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long>  
     Float getRatebyISBN(Long ISBN);
 
 
-
     Page<Book> findAllByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(String name, String author, Pageable pager);
 
 }

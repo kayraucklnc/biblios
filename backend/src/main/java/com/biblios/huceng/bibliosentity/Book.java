@@ -53,6 +53,7 @@ public class Book {
 
 
     @ManyToMany()
+    @JsonIgnore
     @JoinTable(
             name = "BorrowedBooks",
             joinColumns = @JoinColumn(name = "ISBN"),

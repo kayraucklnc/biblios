@@ -76,16 +76,18 @@ const Feed = ({
             console.error("There's an error", error);
           });
       } else if (isProfile) {
-        fetch(`http://localhost:8080/api/post/${profilename}`, opts)
+        fetch(`http://localhost:8080/api/user/books/${profilename}/${currentPage - 1}`, opts)
           .then((res) => {
             return res.json();
           })
           .then((data) => {
-            setPosts(data.reverse());
+            setBooks(data.content);
+            setTotalPages(data.totalPages);
+            console.log(data.content);
             return data;
           })
           .then(() => {
-            setLoading(false);
+            setLoadingBooks(false);
           })
           .catch((error) => {
             console.error("There's an error", error);
@@ -136,7 +138,6 @@ const Feed = ({
 
   return (
     <div className="feed">
-      <text>Search: {isSearched ? "YES" : "NO"}</text>
       <PageSelection
         currentPage={currentPage}
         totalPages={totalPages}
@@ -166,6 +167,7 @@ const Feed = ({
                 author={b.author}
                 format={b.format}
                 category={b.category}
+                hideBorrow={!isHome}
               />
             ))}
 
@@ -209,6 +211,7 @@ const Feed = ({
                   author={b.author}
                   format={b.format}
                   category={b.category}
+                  hideBorrow={!isHome}
                 />
               ))}
           </div>

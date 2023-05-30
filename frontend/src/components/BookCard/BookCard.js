@@ -243,6 +243,7 @@ const BookCard = (props) => {
     format,
     category,
     onBorrow,
+    hideBorrow
   } = props;
 
   return (
@@ -285,7 +286,7 @@ const BookCard = (props) => {
           </text>
         </div>
         <div>
-          {copiesLeft > 0 && (
+          {(copiesLeft > 0 && !hideBorrow) && (
             <button
               className="card__button btn borrowButton"
               onClick={onBorrow}

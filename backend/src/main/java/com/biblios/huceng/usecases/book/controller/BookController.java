@@ -2,6 +2,7 @@ package com.biblios.huceng.usecases.book.controller;
 
 import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.entity.AppUser;
+import com.biblios.huceng.entity.repository.AppUserRepository;
 import com.biblios.huceng.startup.StartupService;
 import com.biblios.huceng.usecases.book.dto.BookRequest;
 import com.biblios.huceng.usecases.book.service.BookService;
@@ -20,6 +21,8 @@ import java.util.Collection;
 public class BookController {
     private final BookService bookService;
     private final StartupService startupService;
+    private final AppUserRepository appUserRepository;
+
 
     @PostMapping()
     public void createNewPost(@RequestBody BookRequest bookRequest){
@@ -33,6 +36,7 @@ public class BookController {
 
         return bookService.returnAllBooks(page, 10);
     }
+
 
     @GetMapping("borrow/{bookISBN}")
     public boolean borrowBook(@PathVariable long bookISBN){

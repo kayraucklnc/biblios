@@ -47,6 +47,7 @@ const Home = (props) => {
 
   return (
     <>
+      <Navbar/>
       <SearchPage
         searchBooks={searchBooks}
         scrollToInvisible={scrollToInvisible}

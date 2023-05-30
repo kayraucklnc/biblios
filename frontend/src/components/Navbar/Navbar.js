@@ -66,9 +66,9 @@ const Navbar = ({ setSearched, setKeyword }) => {
           ></img>
         </span>
       </div>
-      <div className="navbarCenter">
-        <Searchbar setSearched={setSearched} setKeyword={setKeyword} />
-      </div>
+      {/*<div className="navbarCenter">*/}
+      {/*  <Searchbar setSearched={setSearched} setKeyword={setKeyword} />*/}
+      {/*</div>*/}
       <div className="navbarRight">
         <div className="navbarIcons">
           <HomeOutlined

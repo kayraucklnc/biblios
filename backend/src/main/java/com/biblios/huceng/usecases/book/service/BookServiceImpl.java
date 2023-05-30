@@ -27,6 +27,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
 
+
     private final AppUserRepository appUserRepository;
 
     @Override
@@ -84,8 +85,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<Book> returnAllBooks(int page, int pageSize) {
-        Pageable firstPageWithTwoElements = PageRequest.of(page, pageSize, Sort.by("totalCopies").descending());
-        Page<Book> allBooks = bookRepository.findAll(firstPageWithTwoElements);
+        Pageable firstPage = PageRequest.of(page, pageSize, Sort.by("totalCopies").descending());
+        Page<Book> allBooks = bookRepository.findAll(firstPage);
 
         return allBooks;
     }
@@ -108,4 +109,7 @@ public class BookServiceImpl implements BookService {
         return false;
     }
 
+    public List<AppUser> getUsersBorrowingBook(Book book) {
+        return appUserRepository.findAllByBorrowedByBooksContaining(book);
+    }
 }

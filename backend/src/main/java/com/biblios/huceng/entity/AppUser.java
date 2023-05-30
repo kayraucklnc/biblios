@@ -1,5 +1,6 @@
 package com.biblios.huceng.entity;
 
+import com.biblios.huceng.bibliosentity.Book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -73,6 +74,11 @@ public class AppUser {
     @JsonIgnore
     @ToString.Exclude
     private Collection<AppUser> followers = new ArrayList<>();
+
+
+    @ManyToMany(mappedBy = "borrowedByUsers")
+    private Collection<Book> borrowedByBooks = new ArrayList<>();
+
 
     public AppUser(
             Long id,

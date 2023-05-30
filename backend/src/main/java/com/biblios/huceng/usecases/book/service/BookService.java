@@ -1,6 +1,7 @@
 package com.biblios.huceng.usecases.book.service;
 
 import com.biblios.huceng.bibliosentity.Book;
+import com.biblios.huceng.entity.AppUser;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface BookService {
     Page<Book> searchBooksByName(String searchTerm, int page, int size);
 
     boolean returnBook(long bookISBN, Long appUserID);
+
+    List<AppUser> getUsersBorrowingBook(Book book);
 }
