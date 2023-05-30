@@ -1,11 +1,15 @@
 package com.biblios.huceng.usecases.book.controller;
 
 import com.biblios.huceng.bibliosentity.Book;
+import com.biblios.huceng.bibliosentity.Publisher;
+import com.biblios.huceng.bibliosentity.Shelf;
 import com.biblios.huceng.entity.AppUser;
 import com.biblios.huceng.entity.repository.AppUserRepository;
 import com.biblios.huceng.startup.StartupService;
 import com.biblios.huceng.usecases.book.dto.BookRequest;
 import com.biblios.huceng.usecases.book.service.BookService;
+import com.biblios.huceng.usecases.publisher.service.PublisherService;
+import com.biblios.huceng.usecases.shelf.service.ShelfService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -21,16 +25,17 @@ import java.util.Collection;
 public class BookController {
     private final BookService bookService;
     private final StartupService startupService;
-    private final AppUserRepository appUserRepository;
+    private final PublisherService publisherService;
+    private final ShelfService shelfService;
 
 
     @PostMapping()
-    public void createNewPost(@RequestBody BookRequest bookRequest){
+    public void createNewPost(@RequestBody BookRequest bookRequest) {
 //        bookService.createBook(bookRequest);
     }
 
     @GetMapping("/{page}")
-    public Page<Book> returnAllBooks(@PathVariable int page){
+    public Page<Book> returnAllBooks(@PathVariable int page) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AppUser appUser = startupService.getUser(auth.getName());
 
@@ -39,7 +44,7 @@ public class BookController {
 
 
     @GetMapping("borrow/{bookISBN}")
-    public boolean borrowBook(@PathVariable long bookISBN){
+    public boolean borrowBook(@PathVariable long bookISBN) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AppUser appUser = startupService.getUser(auth.getName());
 
@@ -47,10 +52,21 @@ public class BookController {
     }
 
     @GetMapping("return/{bookISBN}")
-    public boolean returnBook(@PathVariable long bookISBN){
+    public boolean returnBook(@PathVariable long bookISBN) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AppUser appUser = startupService.getUser(auth.getName());
 
         return bookService.returnBook(bookISBN, appUser.getId());
+    }
+
+    @PostMapping("addBook")
+    public boolean addBook(@RequestBody BookRequest bookRequest) {
+        Publisher publisher = publisherService.getPublisherByName("Universal Architecture Net");
+        Shelf shelf = shelfService.getShelf("1");
+        Book book = new Book(bookRequest.getIsbn(), bookRequest.getName(), bookRequest.getFormat(), bookRequest.getAuthor(), bookRequest.getPhotoURL(),
+                bookRequest.getCopiesLeft(), bookRequest.getTotalCopies(), bookRequest.getCategory(), bookRequest.getDescription(), bookRequest.getRate(), shelf, publisher);
+        bookService.createBook(book);
+        return true;
+
     }
 }

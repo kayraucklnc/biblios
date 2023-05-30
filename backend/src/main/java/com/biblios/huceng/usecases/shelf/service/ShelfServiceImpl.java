@@ -22,10 +22,8 @@ public class ShelfServiceImpl implements ShelfService{
     @Override
     public Shelf getShelf(String ID){return shelfRepository.getShelfByID(ID);}
 
-
     @Override
     public void createShelf(Shelf shelf){shelfRepository.save(shelf);}
-
 
     @Override
     public void createAllShelves(List<Shelf> shelves){shelfRepository.saveAll(shelves);}

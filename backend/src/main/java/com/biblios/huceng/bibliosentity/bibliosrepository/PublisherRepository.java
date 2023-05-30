@@ -26,6 +26,4 @@ public interface PublisherRepository extends PagingAndSortingRepository<Publishe
 
     @Query("SELECT p.name FROM Publisher p WHERE p.ID= :id")
     String getPublisherNameByID(String id);
-
-
 }

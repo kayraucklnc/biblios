@@ -4,10 +4,9 @@ import lombok.Data;
 
 @Data
 public class BookRequest {
-    Long ISBN;
+    Long isbn;
     String name;
     String format;
-    String LocationID;
     String author;
     String photoURL;
     Integer totalCopies;

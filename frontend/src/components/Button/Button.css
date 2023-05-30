@@ -6,7 +6,7 @@
   border: none;
   margin: 1rem 0;
   margin-right: 1.5rem;
-  background-color: #ff6a6a;
+  background-color: #6ac1ff;
   box-shadow: 0px 14px 9px -15px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   font-weight: 500;
@@ -17,6 +17,7 @@
 
 .btn:hover {
   transform: translateY(-3px);
+  background-color: #3492d2;
 }
 
 .btn-success {
@@ -24,7 +25,7 @@
 }
 
 .btn-danger {
-  background-color: #fe2f75;
+  background-color: #2fa8fe;
 }
 
 .btn-lg {

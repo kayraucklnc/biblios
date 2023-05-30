@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Feed from "../../components/Feed/Feed";
-import AlertSnackbar from "../../components/Snackbar/AlertSnackbar";
 import "./Home.css";
 import SearchPage from "../../components/SearchPage/SearchPage";
+import Share from "../../components/Share/Share";
 
 const Home = (props) => {
   const [followPing, setFollowPing] = useState(true);
@@ -53,6 +53,7 @@ const Home = (props) => {
         scrollToInvisible={scrollToInvisible}
       />
       <div className="homeContainer">
+        <Share/>
         <Feed
           type="home"
           profilename={user.sub}
