@@ -89,6 +89,7 @@ public class DummyDataController {
 
         createUsers();
         createProfile();
+        createSeries();
         createCampus("/campus_data.csv");
         createShelf("/shelf_data.csv");
         createAuthors("/author_data.csv");
@@ -96,7 +97,7 @@ public class DummyDataController {
         createBooks("/main_dataset.csv");
         createReviews();
         createBorrows();
-        createSeries();
+
     }
 
     private void createBorrows() {
@@ -108,6 +109,7 @@ public class DummyDataController {
     Hashtable<String, Shelf> shelvesForBook = new Hashtable<>();
     Hashtable<String, Publisher> publishersForBook = new Hashtable<>();
     Hashtable<String, Author> authorsForBook = new Hashtable<>();
+    Hashtable<String, Series> seriesForBook = new Hashtable<>();
 
     public void createSeries() throws IOException {
         List<Series> allSeries = new ArrayList<Series>();
@@ -122,6 +124,7 @@ public class DummyDataController {
             int tempID = i+1;
             Series series = new Series(String.valueOf(tempID),seriesNames.get(i));
             allSeries.add(series);
+            seriesForBook.put(String.valueOf(i),series);
         }
 
         seriesService.createAllSeries(allSeries);
@@ -242,7 +245,7 @@ public class DummyDataController {
             reader.readNext();
             String[] line;
             while ((line = reader.readNext()) != null) {
-                if(counter == 100) {
+                if(counter == 10000) {
                     break;
                 }
                 String[] data = line;
@@ -284,9 +287,34 @@ public class DummyDataController {
 
                 // Generate a random number between 1 and 129 (inclusive)
 
+                int tempIntSeries = -1;
+                if(data[1].contains("Harry Potter")) {
+                    tempIntSeries = 0;
+                }
+                else if(data[1].contains("Lord of the Rings")) {
+                    tempIntSeries = 1;
+                }
+                else if(data[1].contains("the Hobbit")) {
+                    tempIntSeries = 2;
+                }
+                else if(data[1].contains("Hunger Games")) {
+                    tempIntSeries = 3;
+                }
+
+                Series tempSeries = seriesForBook.get(String.valueOf(tempIntSeries));
+
                 Shelf tempShelf = shelvesForBook.get(data[7]);
                 Publisher tempPublisher = publishersForBook.get(data[8]);
-                Book b = new Book(tempisbn, data[1], data[2], data[6], data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher);
+                Book b;
+
+                if(tempIntSeries>=0) {
+                    b = new Book(tempisbn, data[1], data[2], data[6], data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher,tempSeries);
+
+                }
+                else {
+                    b = new Book(tempisbn, data[1], data[2], data[6], data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher);
+
+                }
                 b.getAuthors().add(authorsForBook.get(data[6]));
                 allBooks.add(b);
                 counter++;

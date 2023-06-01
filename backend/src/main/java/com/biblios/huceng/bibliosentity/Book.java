@@ -36,7 +36,23 @@ public class Book {
     private Double rate;
 
 
-    public Book(Long ISBN, String name, String format,  String author, String photoURL, Integer copiesLeft, Integer totalCopies, String category, String description, Double rate, Shelf shelf, Publisher publisher) {
+    public Book(Long ISBN, String name, String format,  String author, String photoURL, Integer copiesLeft, Integer totalCopies, String category, String description, Double rate, Shelf shelf, Publisher publisher, Series series) {
+        this.ISBN = ISBN;
+        this.name = name;
+        this.format = format;
+        this.author = author;
+        this.photoURL = photoURL;
+        this.copiesLeft = copiesLeft;
+        this.totalCopies = totalCopies;
+        this.category = category;
+        this.description = description;
+        this.rate = rate;
+        this.shelf = shelf;
+        this.publisher = publisher;
+        this.series = series;
+    }
+
+    public Book(Long ISBN, String name, String format,  String author, String photoURL, Integer copiesLeft, Integer totalCopies, String category, String description, Double rate, Shelf shelf, Publisher publisher ) {
         this.ISBN = ISBN;
         this.name = name;
         this.format = format;
