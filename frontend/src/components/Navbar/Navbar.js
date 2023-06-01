@@ -4,6 +4,7 @@ import { Person, Chat, Notifications, HomeOutlined } from "@mui/icons-material";
 import Searchbar from "../Searchbar/Searchbar";
 import logo from "../../assets/whiteLogo.svg";
 import { useHistory } from "react-router-dom";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const Navbar = ({ setSearched, setKeyword }) => {
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -71,6 +72,14 @@ const Navbar = ({ setSearched, setKeyword }) => {
       {/*</div>*/}
       <div className="navbarRight">
         <div className="navbarIcons">
+          <AdminPanelSettingsIcon
+              style={{ height: "35px", width: "35px" }}
+              className="homeNavbarIcon infoNavbarIcons"
+              onClick={() => {
+                redirectTo("/admin");
+                window.scrollTo(0, 0);
+              }}
+            />
           <HomeOutlined
             style={{ height: "35px", width: "35px" }}
             className="homeNavbarIcon infoNavbarIcons"

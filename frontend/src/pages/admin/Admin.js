@@ -16,7 +16,7 @@ const Admin = (props) => {
         messageSender={props.messageSender}
       />
       <div className="announcementsContainer">
-        <Sidebar />
+        
         <AdminTabs />
       </div>
     </>

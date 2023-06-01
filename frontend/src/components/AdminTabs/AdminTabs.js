@@ -44,7 +44,7 @@ const AdminTabs = () => {
               toggleState === 1 ? "content  active-content" : "content"
             }
           >
-            <RequestTab pingUserList={pingUserList} />
+            {/* <RequestTab pingUserList={pingUserList} /> */}
           </div>
 
           <div
@@ -63,7 +63,7 @@ const AdminTabs = () => {
               toggleState === 3 ? "content  active-content" : "content"
             }
           >
-            <ReportManage />
+            {/* <ReportManage /> */}
           </div>
         </div>
       </div>

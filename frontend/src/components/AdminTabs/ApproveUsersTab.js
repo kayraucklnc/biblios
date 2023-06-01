@@ -31,10 +31,10 @@ const ApproveUsersTab = ({ setPingUserList, pingUserList }) => {
     for (const row of rows) {
       let newRow = {};
 
-      newRow.id = row.username;
-      newRow.username = row.username;
-      newRow.email = row.email;
-      newRow.role = row.role.slice(5);
+      newRow.id = row.name;
+      newRow.username = row.format;
+      newRow.email = row.author;
+      newRow.role = 'admin';
 
       newRows.push(newRow);
     }
@@ -97,7 +97,7 @@ const ApproveUsersTab = ({ setPingUserList, pingUserList }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/api/signup", {
+    fetch("http://localhost:8080/api/book/0", {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -108,10 +108,11 @@ const ApproveUsersTab = ({ setPingUserList, pingUserList }) => {
         return res.json();
       })
       .then((data) => {
-        setRows(data);
-        setTableHeight(data.length);
+        console.log(data.content)
+        setRows(data.content);
+        setTableHeight(data.content.length);
         setLoading(false);
-        return data;
+        return data.content;
       })
       .catch((error) => {
         console.error("There's an error", error);
@@ -119,9 +120,9 @@ const ApproveUsersTab = ({ setPingUserList, pingUserList }) => {
   }, [pingFetch]);
 
   const columns = [
-    { field: "username", headerName: "Username", flex: 3 },
-    { field: "email", headerName: "E-mail", flex: 3 },
-    { field: "role", headerName: "Role", flex: 1 },
+    { field: "name", headerName: "Username", flex: 3 },
+    { field: "format", headerName: "E-mail", flex: 3 },
+    { field: "author", headerName: "Role", flex: 1 },
   ];
 
   const StyledGridOverlay = styled("div")(({ theme }) => ({
