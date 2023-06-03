@@ -55,6 +55,7 @@ const Feed = ({
     },
   };
 
+
   useEffect(() => {
     let urlEnds = user.roles[0] !== "ROLE_ADMIN" ? "/feed" : "";
     if (!searchTerm || searchTerm === "") {

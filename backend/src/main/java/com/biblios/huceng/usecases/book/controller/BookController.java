@@ -61,6 +61,10 @@ public class BookController {
 
         return bookService.returnBook(bookISBN, appUser.getId());
     }
+    @GetMapping("borrows")
+    public boolean returnBook() {
+        return bookService.borrows();
+    }
 
     @PostMapping("addBook")
     public boolean addBook(@RequestBody BookRequest bookRequest) {

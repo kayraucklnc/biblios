@@ -1,151 +1,84 @@
-import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import { colors } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import {useEffect, useState} from "react";
 
-import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
+const token = sessionStorage.getItem("token");
 
-const RequestTab = ({ pingUserList }) => {
-  const [pageSize, setPageSize] = useState(20);
+function createData(
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+) {
+  return { name, calories, fat, carbs, protein };
+}
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-      fontSize: 22,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 16,
-    },
-  }));
+// const rows = [
+//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+//   createData('Eclair', 262, 16.0, 24, 6.0),
+//   createData('Cupcake', 305, 3.7, 67, 4.3),
+//   createData('Gingerbread', 356, 16.0, 49, 3.9),
+// ];
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: colors.grey[100],
-    },
-    "&:nth-of-type(even)": {
-      backgroundColor: colors.grey[300],
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
 
-  const token = sessionStorage.getItem("token");
-
+export default function BasicTable() {
   const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  const opts = {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      page: 0,
-      size: 1000,
-    }),
-  };
-
-  function dataParser(data, i) {
-    let picked = {};
-    picked.i = i;
-    picked.id = data.username;
-    picked.username = data.username;
-    picked.firstName = data.firstName;
-    picked.lastName = data.lastName;
-    picked.rating = Math.round(data.profile.rating * 100) / 100;
-    return picked;
-  }
-
-  const columns = [
-    { field: "i", headerName: "ID", flex: 1 },
-    { field: "username", headerName: "Username", flex: 8 },
-    { field: "firstName", headerName: "First name", flex: 8 },
-    { field: "lastName", headerName: "Last name", flex: 8 },
-  ];
-
-  function download_table_as_csv() {
-    const csvString = [
-      ["Username", "First Name", "Last Name", "Rating"],
-      ...rows.map((item) => [
-        item.username,
-        item.firstName,
-        item.lastName,
-        item.rating,
-      ]),
-    ]
-      .map((e) => e.join(","))
-      .join("\n");
-
-    const element = document.createElement("a");
-    const file = new Blob(["\ufeff", csvString], {
-      type: "text/csv",
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = "userData.csv";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  }
-
-  const setTableHeight = (i) => {
-    document.getElementById("requestUsersTable").style.height = `${
-      (i === 0 ? 400 : 92) + 36 * Math.min(i, pageSize)
-    }px`;
-    document.querySelector(
-      "#root > div.announcementsContainer > div.tabWrapper > div > div.content-tabs > div.content.active-content > div > div.MuiDataGrid-root.css-1xy1myn-MuiDataGrid-root > div:nth-child(3) > div > div.MuiTablePagination-root.css-rtrcn9-MuiTablePagination-root > div > p"
-    ).style.width = "110px";
-  };
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/requestinfo/all", opts)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        let demoRows = [];
-        let i = 1;
-        for (const element of data.content) {
-          demoRows.push(dataParser(element, i));
-          i++;
-        }
-        setRows(demoRows);
-        setLoading(false);
-        setTableHeight(data.content.length);
-        return data;
-      })
-      .catch((error) => {
-        console.error("There's an error", error);
-      });
-  }, [pingUserList]);
+    fetch("http://localhost:8080/api/log/", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data)
+          setRows(data);
+          return data;
+        })
+        .catch((error) => {
+          console.error("There's an error", error);
+        });
+  }, []);
 
   return (
-    <div id="requestUsersTable">
-      <div className="outerDiv">
-        <DownloadForOfflineRoundedIcon
-          onClick={download_table_as_csv}
-          className="downloadButton"
-          style={{ fontSize: 50, margin: 5, marginTop: -20 }}
-          id="downloadIcon"
-        />
-        <h2 style={{ marginTop: -40 }}>List of users:</h2>
-        <hr id="easeBar" className="loadBar"></hr>
-      </div>
-
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={pageSize}
-        rowsPerPageOptions={[pageSize]}
-        density="compact"
-      />
-    </div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="right">ID</TableCell>
+              <TableCell align="right">Timestamp</TableCell>
+              <TableCell align="right">Log</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+                <TableRow
+                    key={row.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right">{row.timestamp}</TableCell>
+                  <TableCell align="right">{row.log}</TableCell>
+                </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
   );
-};
-
-export default RequestTab;
+}

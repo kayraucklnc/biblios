@@ -218,7 +218,52 @@ function getIconByText(text) {
   // Default to the book icon if no specific match was found
   return <BookOutlined />;
 }
+const token = sessionStorage.getItem("token");
 
+
+function onBorrow(isbn){
+  const opts = {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  fetch(
+      "http://localhost:8080/api/book/borrow/" + isbn,
+      opts
+  )
+      .then((res) => {
+        window.location.reload();
+        return res.json();
+      })
+      .catch((error) => {
+        console.error("There's an error", error);
+      });
+}
+
+function onReturn(isbn){
+  const opts = {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  fetch(
+      "http://localhost:8080/api/book/return/" + isbn,
+      opts
+  )
+      .then((res) => {
+        window.location.reload();
+        return res.json();
+      })
+      .catch((error) => {
+        console.error("There's an error", error);
+      });
+}
 function BookCategory({ category }) {
   const icon = getIconByText(category);
 
@@ -242,7 +287,6 @@ const BookCard = (props) => {
     author,
     format,
     category,
-    onBorrow,
     hideBorrow,
     series
   } = props;
@@ -293,9 +337,17 @@ const BookCard = (props) => {
           {(copiesLeft > 0 && !hideBorrow) && (
             <button
               className="card__button btn borrowButton"
-              onClick={onBorrow}
+              onClick={() => onBorrow(props.isbn)}
             >
               Borrow
+            </button>
+          )}
+          {(copiesLeft > 0 && hideBorrow) && (
+            <button
+              className="card__button btn borrowButton"
+              onClick={() => onReturn(props.isbn)}
+            >
+              Return
             </button>
           )}
           {copiesLeft == 0 && (

@@ -345,8 +345,8 @@ const Profile = (props) => {
               <img className="profileCoverImg" src={banner} alt="" />
               <img className="profileUserImg" src={profilePicture} alt="" />
               <div className="profileRating">
-                <Book className="profileRateCurrentStar" />{" "}
-                <h2 className="profileRate">{rating}</h2>
+                {/*<Book className="profileRateCurrentStar" />{" "}*/}
+                {/*<h2 className="profileRate">{rating}</h2>*/}
               </div>
               {!isOwnProfile && (
                 <div className="followArea" onClick={() => handleFollow()}>

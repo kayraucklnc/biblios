@@ -36,4 +36,6 @@ public interface BookService {
     boolean returnBook(long bookISBN, Long appUserID);
 
     List<AppUser> getUsersBorrowingBook(Book book);
+
+    List<AppUser> borrows();
 }
