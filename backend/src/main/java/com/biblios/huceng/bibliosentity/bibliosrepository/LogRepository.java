@@ -1,8 +1,7 @@
 package com.biblios.huceng.bibliosentity.bibliosrepository;
 
-import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.bibliosentity.Log;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LogRepository  extends PagingAndSortingRepository<Log, Long> {
+public interface LogRepository  extends JpaRepository<Log, Long> {
 }

@@ -16,6 +16,9 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long>  
     @Query("SELECT b FROM Book b WHERE b.category = :category ORDER BY b.category desc")
     List<Book> getAllBooksByCategory(String category);
 
+    @Query("SELECT DISTINCT b FROM Book b")
+    List<Book> getAllBooks( );
+
     Page<Book> findAll(Pageable pageable);
 
     @Query("SELECT b FROM Book b WHERE b.ISBN= :ISBN")

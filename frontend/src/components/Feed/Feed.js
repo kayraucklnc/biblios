@@ -118,6 +118,7 @@ const Feed = ({
           return res.json();
         })
         .then((data) => {
+          console.log(data.content)
           setBooks(data.content);
           setTotalPages(data.totalPages);
           seItemCount(data.totalElements);
@@ -168,6 +169,7 @@ const Feed = ({
                 format={b.format}
                 category={b.category}
                 hideBorrow={!isHome}
+                series={b.series?.name}
               />
             ))}
 
@@ -212,6 +214,7 @@ const Feed = ({
                   format={b.format}
                   category={b.category}
                   hideBorrow={!isHome}
+                  series={b.series?.name}
                 />
               ))}
           </div>

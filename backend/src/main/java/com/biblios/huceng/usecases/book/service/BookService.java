@@ -4,6 +4,7 @@ import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.entity.AppUser;
 import org.springframework.data.domain.Page;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface BookService {
@@ -27,6 +28,8 @@ public interface BookService {
     Book getBookbyName(String name);
 
     Page<Book> returnAllBooks(int page, int pageSize);
+
+    List<Book> returnAllBooks();
 
     Page<Book> searchBooksByName(String searchTerm, int page, int size);
 

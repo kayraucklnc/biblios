@@ -33,7 +33,7 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public void createAuthor(Author author) {
-        logService.addLog("Author added");
+        logService.addLog("Author with " + author.getID() + " is added");
         authorRepository.save(author);
     }
 

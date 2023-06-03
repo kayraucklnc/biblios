@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @RestController
@@ -36,10 +37,12 @@ public class BookController {
 
     @GetMapping("/{page}")
     public Page<Book> returnAllBooks(@PathVariable int page) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        AppUser appUser = startupService.getUser(auth.getName());
-
         return bookService.returnAllBooks(page, 10);
+    }
+
+    @GetMapping()
+    public List<Book> returnAllBooks() {
+        return bookService.returnAllBooks();
     }
 
 
@@ -67,6 +70,11 @@ public class BookController {
                 bookRequest.getCopiesLeft(), bookRequest.getTotalCopies(), bookRequest.getCategory(), bookRequest.getDescription(), bookRequest.getRate(), shelf, publisher);
         bookService.createBook(book);
         return true;
+    }
 
+    @PostMapping("delete/{bookISBN}")
+    public boolean addBook(@PathVariable long bookISBN) {
+        bookService.deleteBook(bookISBN);
+        return true;
     }
 }

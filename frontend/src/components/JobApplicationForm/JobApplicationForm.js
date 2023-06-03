@@ -243,7 +243,7 @@ const JobApplicationForm = ({ applicationForm }) => {
         <div className="postCenter">
           {showError && (
             <h4 className="alert-text invalidEdit">
-              Invalid Title and Description!
+              Invalid Data, fill all fields!
             </h4>
           )}
           {!isEdit ? (

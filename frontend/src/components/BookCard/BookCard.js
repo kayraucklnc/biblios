@@ -231,7 +231,7 @@ function BookCategory({ category }) {
 }
 
 const BookCard = (props) => {
-  const {
+  let {
     title,
     coverImage,
     description,
@@ -243,7 +243,8 @@ const BookCard = (props) => {
     format,
     category,
     onBorrow,
-    hideBorrow
+    hideBorrow,
+    series
   } = props;
 
   return (
@@ -283,6 +284,9 @@ const BookCard = (props) => {
           <AllInboxIcon />
           <text className="bookLeftText">
             {copiesLeft}/{totalCopies}
+          </text>
+          <text className="bookLeftText">
+            {series}
           </text>
         </div>
         <div>

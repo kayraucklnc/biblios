@@ -27,7 +27,7 @@ const AdminTabs = () => {
             className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
             onClick={() => toggleTab(2)}
           >
-            Approve Users
+            All Books
           </button>
           <button
             className={toggleState === 3 ? "tabs active-tabs" : "tabs"}
@@ -63,7 +63,7 @@ const AdminTabs = () => {
               toggleState === 3 ? "content  active-content" : "content"
             }
           >
-            {/* <ReportManage /> */}
+             <ReportManage />
           </div>
         </div>
       </div>

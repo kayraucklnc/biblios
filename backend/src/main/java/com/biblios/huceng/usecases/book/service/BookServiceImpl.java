@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean borrowBook(Long ISBN, Long appUserID) {
-        logService.addLog("Book added");
+        logService.addLog("Book id with " + ISBN + " is added");
         Book book = bookRepository.getBookbyISBN(ISBN);
         if (book.getCopiesLeft() > 0) {
             AppUser appUser = appUserRepository.findById(appUserID).orElseThrow();
@@ -54,7 +55,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void createBook(Book book) {
-        logService.addLog("Book added");
+        logService.addLog("Book id with " + book.getISBN() + " is added");
         bookRepository.save(book);
     }
 
@@ -66,7 +67,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long bookISBN) {
-        logService.addLog("Book deleted");
+        logService.addLog("Book id with " + bookISBN + " is deleted");
         bookRepository.deleteById(bookISBN);
     }
 
@@ -99,6 +100,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> returnAllBooks() {
+        return bookRepository.getAllBooks();
+    }
+
+    @Override
     public Page<Book> searchBooksByName(String searchTerm, int page, int size) {
         Pageable pager = PageRequest.of(page, size, Sort.by("totalCopies").descending());
         return bookRepository.findAllByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(searchTerm, searchTerm, pager);
@@ -106,7 +112,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean returnBook(long bookISBN, Long appUserID) {
-        logService.addLog("Book returned");
+        logService.addLog("Book id with " + bookISBN + " is returned");
         Book book = bookRepository.getBookbyISBN(bookISBN);
         AppUser appUser = appUserRepository.findById(appUserID).orElseThrow();
         if (book.getBorrowedByUsers().contains(appUser)) {

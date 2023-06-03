@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +21,10 @@ public class LogServiceImpl implements LogService {
     public void addLog(String s) {
         Log log = new Log(s);
         logRepository.save(log);
+    }
+
+    @Override
+    public List<Log> getLogs() {
+        return logRepository.findAll();
     }
 }
