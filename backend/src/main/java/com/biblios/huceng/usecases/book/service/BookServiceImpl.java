@@ -8,6 +8,7 @@ import com.biblios.huceng.bibliosentity.bibliosrepository.BookRepository;
 import com.biblios.huceng.bibliosentity.bibliosrepository.LogRepository;
 import com.biblios.huceng.entity.AppUser;
 import com.biblios.huceng.entity.repository.AppUserRepository;
+import com.biblios.huceng.usecases.book.dto.Borrows;
 import com.biblios.huceng.usecases.log.service.LogService;
 import com.biblios.huceng.usecases.log.service.LogServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -125,5 +127,19 @@ public class BookServiceImpl implements BookService {
 
     public List<AppUser> getUsersBorrowingBook(Book book) {
         return appUserRepository.findAllByBorrowedByBooksContaining(book);
+    }
+
+    public List<Borrows> borrows() {
+        List<Object[]> results = bookRepository.getISBNOfBorrowedBooks();
+        List<Borrows> borrowsList = new ArrayList<>();
+
+        for (Object[] row : results) {
+            String bookName = (String) row[0];
+            String username = (String) row[1];
+
+            Borrows borrows = new Borrows(bookName, username);
+            borrowsList.add(borrows);
+        }
+        return borrowsList;
     }
 }

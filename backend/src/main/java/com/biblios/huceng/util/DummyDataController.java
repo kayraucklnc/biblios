@@ -237,7 +237,7 @@ public class DummyDataController {
 
     public void createBooks(String csvFile) throws IOException {
 
-        int counter = 0;
+
         List<Book> allBooks = new ArrayList<Book>();
         try (CSVReader reader = new CSVReader(new InputStreamReader(getClass().getResourceAsStream(csvFile)))) {
 
@@ -245,9 +245,7 @@ public class DummyDataController {
             reader.readNext();
             String[] line;
             while ((line = reader.readNext()) != null) {
-                if(counter == 10000) {
-                    break;
-                }
+
                 String[] data = line;
                 String tempLong = data[4].substring(0, data[4].length() - 3);
                 Long tempisbn = Long.parseLong(tempLong);
@@ -305,19 +303,21 @@ public class DummyDataController {
 
                 Shelf tempShelf = shelvesForBook.get(data[7]);
                 Publisher tempPublisher = publishersForBook.get(data[8]);
+                String tempAuthorName = authorsForBook.get(data[6]).getName();
                 Book b;
 
+
                 if(tempIntSeries>=0) {
-                    b = new Book(tempisbn, data[1], data[2], data[6], data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher,tempSeries);
+                    b = new Book(tempisbn, data[1], data[2], tempAuthorName, data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher,tempSeries);
 
                 }
                 else {
-                    b = new Book(tempisbn, data[1], data[2], data[6], data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher);
+                    b = new Book(tempisbn, data[1], data[2], tempAuthorName, data[0], lastThreeDigitsSum - 3, lastThreeDigitsSum, data[5], descriptionParagraph, tempRate, tempShelf, tempPublisher);
 
                 }
                 b.getAuthors().add(authorsForBook.get(data[6]));
                 allBooks.add(b);
-                counter++;
+
 
             }
         } catch (CsvValidationException e) {

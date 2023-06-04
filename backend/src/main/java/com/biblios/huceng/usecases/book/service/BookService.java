@@ -2,6 +2,7 @@ package com.biblios.huceng.usecases.book.service;
 
 import com.biblios.huceng.bibliosentity.Book;
 import com.biblios.huceng.entity.AppUser;
+import com.biblios.huceng.usecases.book.dto.Borrows;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -37,5 +38,5 @@ public interface BookService {
 
     List<AppUser> getUsersBorrowingBook(Book book);
 
-    List<AppUser> borrows();
+    List<Borrows> borrows();
 }

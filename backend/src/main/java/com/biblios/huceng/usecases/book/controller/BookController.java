@@ -7,6 +7,7 @@ import com.biblios.huceng.entity.AppUser;
 import com.biblios.huceng.entity.repository.AppUserRepository;
 import com.biblios.huceng.startup.StartupService;
 import com.biblios.huceng.usecases.book.dto.BookRequest;
+import com.biblios.huceng.usecases.book.dto.Borrows;
 import com.biblios.huceng.usecases.book.service.BookService;
 import com.biblios.huceng.usecases.publisher.service.PublisherService;
 import com.biblios.huceng.usecases.shelf.service.ShelfService;
@@ -62,7 +63,7 @@ public class BookController {
         return bookService.returnBook(bookISBN, appUser.getId());
     }
     @GetMapping("borrows")
-    public boolean returnBook() {
+    public List<Borrows> returnBook() {
         return bookService.borrows();
     }
 
