@@ -2,29 +2,15 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import Feed from "../../components/Feed/Feed";
-import Rightbar from "../../components/Rightbar/Rightbar";
-import Like from "../../components/Like/Like";
+
 import AlertSnackbar from "../../components/Snackbar/AlertSnackbar";
 
-import {
-  ArrowDropDown,
-  Edit,
-  Save,
-  Star,
-  PriorityHigh,
-  DownloadForOfflineRounded,
-} from "@mui/icons-material";
-import { pink } from "@mui/material/colors";
-import DropdownMenu from "../../components/DropdownMenu/DropdownMenu";
+
 import "./Profile.css";
-import RatingStars from "../../components/RatingStars/RatingStars";
 import Follow from "../../components/Follow/Follow";
 
-import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { Book } from "@material-ui/icons";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

@@ -1,0 +1,9 @@
+.download-icon {
+    color: #2fa8fe;
+    font-size: 59px;
+}
+
+.download-icon:hover {
+    color: #0077ff;
+    background-color: white;
+}

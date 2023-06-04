@@ -7,7 +7,7 @@ const Info = () => {
       <p className="infoP">
         Connect with the associates of Hacettepe University
         <br />
-        on LinkedHU_CENG.
+        on Biblios.
       </p>
       <h4 className="infoBottom">
         Developed by{" "}
@@ -15,7 +15,7 @@ const Info = () => {
           className="link-2"
           href="https://github.com/BBM384-2021/bbm384-2022-demo-final-segmentationfault"
         >
-          @SegmentationFault
+          @Kayra UCKILINC / DENIZ ERKIN KASAPLI
         </a>{" "}
         <br />
       </h4>

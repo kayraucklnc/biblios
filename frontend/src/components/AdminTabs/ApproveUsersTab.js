@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react";
 import {styled} from "@mui/material/styles";
+import "./AdminTabStyle.css";
 
 import {DataGrid} from "@mui/x-data-grid";
 
 import {Box} from "@mui/material";
 import {Block, HowToReg} from "@mui/icons-material";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const ApproveUsersTab = ({setPingUserList, pingUserList}) => {
     const [rows, setRows] = useState([]);
@@ -192,43 +194,57 @@ const ApproveUsersTab = ({setPingUserList, pingUserList}) => {
             </StyledGridOverlay>
         );
     };
+    function downloadCSV(array, filename) {
+        const csvContent = "data:text/csv;charset=utf-8," + array.map(row => Object.values(row).join(',')).join('\n');
+        const encodedUri = encodeURI(csvContent);
 
+        const downloadLink = document.createElement('a');
+        downloadLink.setAttribute('href', encodedUri);
+        downloadLink.setAttribute('download', filename);
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
     return (
-        <div id="approveUsersTable" className="approveUsersTable">
-            <div style={{display: "flex", flexDirection: "column"}}>
-                <div
-                    className="manageButtonsPassive"
-                    id="approveUserButton"
-                    onClick={() => {
-                        handleApproveUser().then(() => setPingFetch(!pingFetch));
-                    }}
-                >
-                    {" "}
-                    {/*<HowToReg style={{fontSize: 40, marginRight: 5}}/> Approve Users{" "}*/}
+        <div>
+            <DownloadIcon onClick={() => {downloadCSV(rows, "books.csv")}} className="download-icon"/>
+            <div id="approveUsersTable" className="approveUsersTable">
+                <div style={{display: "flex", flexDirection: "column"}}>
+                    <div
+                        className="manageButtonsPassive"
+                        id="approveUserButton"
+                        onClick={() => {
+                            handleApproveUser().then(() => setPingFetch(!pingFetch));
+                        }}
+                    >
+                        {" "}
+                        {/*<HowToReg style={{fontSize: 40, marginRight: 5}}/> Approve Users{" "}*/}
+                    </div>
+                    <div
+                        className="manageButtonsPassive"
+                        id="denyUserButton"
+                        onClick={() => {
+                            handleDenyUser().then(() => setPingFetch(!pingFetch));
+                        }}
+                    >
+                        {" "}
+                        <Block style={{fontSize: 40, marginRight: 5}}/> Delete Book{" "}
+                    </div>
                 </div>
-                <div
-                    className="manageButtonsPassive"
-                    id="denyUserButton"
-                    onClick={() => {
-                        handleDenyUser().then(() => setPingFetch(!pingFetch));
+                <DataGrid
+                    loading={loading}
+                    rows={finalizedRows}
+                    columns={columns}
+                    pageSize={pageSize}
+                    rowsPerPageOptions={[pageSize]}
+                    checkboxSelection
+                    onSelectionModelChange={(items) => setSelectedRows(items)}
+                    components={{
+                        NoRowsOverlay: CustomNoRowsOverlay,
                     }}
-                >
-                    {" "}
-                    <Block style={{fontSize: 40, marginRight: 5}}/> Delete Book{" "}
-                </div>
+                />
             </div>
-            <DataGrid
-                loading={loading}
-                rows={finalizedRows}
-                columns={columns}
-                pageSize={pageSize}
-                rowsPerPageOptions={[pageSize]}
-                checkboxSelection
-                onSelectionModelChange={(items) => setSelectedRows(items)}
-                components={{
-                    NoRowsOverlay: CustomNoRowsOverlay,
-                }}
-            />
         </div>
     );
 };
