@@ -30,7 +30,7 @@ const Form = ({ type }) => {
           <img src={logout} alt="Log Out" />
         </div>
       )}
-      <Logo text="LinkedHU_CENG" />
+      <Logo text="Biblios" />
       {isLogin && (
         <>
           <LoginForm />

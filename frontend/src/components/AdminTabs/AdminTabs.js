@@ -3,6 +3,7 @@ import { useState } from "react";
 import RequestTab from "./RequestTab";
 import ReportManage from "./ReportManage";
 import ApproveUsersTab from "./ApproveUsersTab";
+import BorrowedTab from "./BorrowedTab.js";
 import "./AdminTabs.css";
 
 const AdminTabs = () => {
@@ -21,7 +22,7 @@ const AdminTabs = () => {
             className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
             onClick={() => toggleTab(1)}
           >
-            All User Info
+            All Boowed Books
           </button>
           <button
             className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
@@ -44,7 +45,7 @@ const AdminTabs = () => {
               toggleState === 1 ? "content  active-content" : "content"
             }
           >
-             <RequestTab pingUserList={pingUserList} />
+             <BorrowedTab pingUserList={pingUserList} />
           </div>
 
           <div
